@@ -22,44 +22,7 @@ app.mount("/static", StaticFiles(directory=os.path.join(Path(__file__).parent,
  # In-memory activity database
 activities = {
 
-# Simple in-memory event management
-events = [
-    {
-        "name": "Spring Coding Hackathon",
-        "description": "A 24-hour coding event for all students.",
-        "date": "2026-04-15",
-        "participants": ["emma@mergington.edu"]
-    }
-]
 
-# List all events
-@app.get("/events")
-def list_events():
-    return events
-
-# Add a new event
-@app.post("/events")
-def add_event(name: str, description: str, date: str):
-    event = {
-        "name": name,
-        "description": description,
-        "date": date,
-        "participants": []
-    }
-    events.append(event)
-    return {"message": f"Event '{name}' added."}
-
-# Join an event
-@app.post("/events/{event_name}/join")
-def join_event(event_name: str, email: str):
-    for event in events:
-        if event["name"] == event_name:
-            if email not in event["participants"]:
-                event["participants"].append(email)
-                return {"message": f"{email} joined {event_name}"}
-            else:
-                return {"message": f"{email} already joined {event_name}"}
-    raise HTTPException(status_code=404, detail="Event not found")
 
 
 
